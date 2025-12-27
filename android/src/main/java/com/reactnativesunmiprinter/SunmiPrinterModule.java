@@ -12,17 +12,14 @@ import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
-import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.module.annotations.ReactModule;
+import com.reactnativesunmiprinter.NativeSunmiPrinterSpec;
 import com.sunmi.peripheral.printer.InnerPrinterCallback;
 import com.sunmi.peripheral.printer.InnerPrinterManager;
 import com.sunmi.peripheral.printer.InnerResultCallback;
 import com.sunmi.peripheral.printer.SunmiPrinterService;
 
-@ReactModule(name = SunmiPrinterModule.NAME)
-public class SunmiPrinterModule extends ReactContextBaseJavaModule {
+public class SunmiPrinterModule extends NativeSunmiPrinterSpec {
 
   private Promise p;
 
@@ -93,7 +90,7 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    *
    * @return
    */
-  @ReactMethod
+  @Override
   public void printerInit() throws RemoteException {
     printerService.printerInit(innerResultCallback);
   }
@@ -103,7 +100,7 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    *
    * @param callback 回调
    */
-  @ReactMethod
+  @Override
   public void printerSelfChecking() throws RemoteException {
     printerService.printerSelfChecking(innerResultCallback);
   }
@@ -111,7 +108,7 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
   /*
    * 获取打印机序号
    */
-  @ReactMethod
+  @Override
   public void getPrinterSerialNo(Promise promise) {
     try {
       promise.resolve(printerService.getPrinterSerialNo());
@@ -125,7 +122,7 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
   /*
    * 获取打印机固件版本号
    */
-  @ReactMethod
+  @Override
   public void getPrinterVersion(Promise promise) {
     try {
       promise.resolve(printerService.getPrinterVersion());
@@ -139,7 +136,7 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
   /*
    * 获取打印机型号
    */
-  @ReactMethod
+  @Override
   public void getPrinterModal(Promise promise) {
     try {
       promise.resolve(printerService.getPrinterModal());
@@ -153,7 +150,7 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
   /**
    * Returns paper width specification for the printer : 58mm or 80mm
    */
-  @ReactMethod
+  @Override
   public void getPrinterPaper(Promise promise) {
     try {
 
@@ -168,7 +165,7 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
   /**
    * 获取打印机的最新状态
    */
-  @ReactMethod
+  @Override
   public void updatePrinterState(Promise promise) {
     try {
       promise.resolve(printerService.updatePrinterState());
@@ -184,7 +181,7 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    * 此接⼝返回值可适⽤于所有商⽶机器判断但部分状态由于硬件配置不会拿到（例如⼿持机不⽀持
    * 开盖检测）
    */
-  @ReactMethod
+  @Override
   public void getServiceVersion(Promise promise) {
     try {
       promise.resolve(printerService.getServiceVersion());
@@ -200,7 +197,7 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    * ⽬前可获取到上电以来的打印⻓度，由于台式机和⼿持机的硬件区别，获取打印结果的返回略有
    * 不同，即⼿持机通过ICallback callback接⼝获取打印⻓度，台式机通过返回值直接获取⻓度。
    */
-  @ReactMethod
+  @Override
   public void getPrintedLength() throws RemoteException {
     printerService.getPrintedLength(innerResultCallback);
   }
@@ -208,7 +205,7 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
   /**
    * 是否存在打印机服务
    */
-  @ReactMethod
+  @Override
   public void hasPrinter(Promise promise) {
     final boolean hasPrinterService = printerService != null;
     promise.resolve(hasPrinterService);
@@ -218,7 +215,7 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    * 打印ESC/POS格式指令
    * data byte[]
    */
-  @ReactMethod
+  @Override
   public void sendRAWData(String base64Data) throws RemoteException {
     final byte[] d = Base64.decode(base64Data, Base64.DEFAULT);
     printerService.sendRAWData(d, innerResultCallback);
@@ -228,7 +225,7 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    * 设置自定义字体
    *
    */
-  @ReactMethod
+  @Override
   public void setFontName(String typeface) throws RemoteException {
     printerService.setFontName(typeface, innerResultCallback);
   }
@@ -237,18 +234,18 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    * @param key
    * @param value
    */
-  @ReactMethod
-  public void setPrinterStyle(int key, int value) throws RemoteException {
-    printerService.setPrinterStyle(key, value);
+  @Override
+  public void setPrinterStyle(double key, double value) throws RemoteException {
+    printerService.setPrinterStyle((int)key, (int)value);
   }
 
   /**
    * 设置对齐模式
    * 全局⽅法，对之后执⾏的打印有影响，打印机初始化时取消相关设置。
    */
-  @ReactMethod
-  public void setAlignment(int alignment) throws RemoteException {
-    printerService.setAlignment(alignment, innerResultCallback);
+  @Override
+  public void setAlignment(double alignment) throws RemoteException {
+    printerService.setAlignment((int)alignment, innerResultCallback);
   }
 
   /**
@@ -258,9 +255,9 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    *
    * @param fontSize
    */
-  @ReactMethod
-  public void setFontSize(float fontSize) throws RemoteException {
-    printerService.setFontSize(fontSize, innerResultCallback);
+  @Override
+  public void setFontSize(double fontSize) throws RemoteException {
+    printerService.setFontSize((float)fontSize, innerResultCallback);
 
   }
 
@@ -269,7 +266,7 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    *
    * @param isWeight
    */
-  @ReactMethod
+  @Override
   public void setFontWeight(boolean isWeight) throws RemoteException {
     if (isWeight) {
       printerService.sendRAWData(ESCUtil.boldOn(), null);
@@ -285,7 +282,7 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    *
    * @param text
    */
-  @ReactMethod
+  @Override
   public void printerText(String text) throws RemoteException {
     printerService.printText(text, null);
   }
@@ -298,9 +295,9 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    * @param typeface
    * @param fontsize
    */
-  @ReactMethod
-  public void printTextWithFont(String text, String typeface, float fontsize) throws RemoteException {
-    printerService.printTextWithFont(text, typeface, fontsize, null);
+  @Override
+  public void printTextWithFont(String text, String typeface, double fontsize) throws RemoteException {
+    printerService.printTextWithFont(text, typeface, (float)fontsize, null);
 
   }
 
@@ -310,7 +307,7 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    *
    * @param text
    */
-  @ReactMethod
+  @Override
   public void printOriginalText(String text) throws RemoteException {
     printerService.printOriginalText(text, null);
   }
@@ -322,7 +319,7 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    * @param colsWidthArr
    * @param colsAlign
    */
-  @ReactMethod
+  @Override
   public void printColumnsText(ReadableArray colrsTextAir, ReadableArray colsWidthArr, ReadableArray colsAlign)
       throws RemoteException {
     String[] texts = new String[colrsTextAir.size()];
@@ -351,7 +348,7 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    * @param colsWidthArr
    * @param colsAlign
    */
-  @ReactMethod
+  @Override
   public void printColumnsString(ReadableArray colsTextArr, ReadableArray colsWidthArr, ReadableArray colsAlign)
       throws RemoteException {
     String[] texts = new String[colsTextArr.size()];
@@ -380,15 +377,15 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    * @param bitmap
    * @param type
    */
-  @ReactMethod
-  public void printBitmapBase64Custom(String encodedString, int pixelWidth, int type) throws RemoteException {
+  @Override
+  public void printBitmapBase64Custom(String encodedString, double pixelWidth, double type) throws RemoteException {
     final String pureBase64Encoded = encodedString.substring(encodedString.indexOf(",") + 1);
     final byte[] decodedBytes = Base64.decode(pureBase64Encoded, Base64.DEFAULT);
     Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
 	  int w = decodedBitmap.getWidth();
     Integer h = decodedBitmap.getHeight();
-    Bitmap scaledImage = Bitmap.createScaledBitmap(decodedBitmap, pixelWidth, (pixelWidth / w) * h, false);
-    printerService.printBitmapCustom(scaledImage, type, innerResultCallback);
+    Bitmap scaledImage = Bitmap.createScaledBitmap(decodedBitmap, (int)pixelWidth, ((int)pixelWidth / w) * h, false);
+    printerService.printBitmapCustom(scaledImage, (int)type, innerResultCallback);
   }
 
   /**
@@ -400,9 +397,9 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    * @param width
    * @param textPosition
    */
-  @ReactMethod
-  public void printBarCode(String data, int symbology, int height, int width, int textPosition) throws RemoteException {
-    printerService.printBarCode(data, symbology, height, width, textPosition, innerResultCallback);
+  @Override
+  public void printBarCode(String data, double symbology, double height, double width, double textPosition) throws RemoteException {
+    printerService.printBarCode(data, (int)symbology, (int)height, (int)width, (int)textPosition, innerResultCallback);
   }
 
   /**
@@ -414,9 +411,9 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    * @param modulesize
    * @param errorlevel
    */
-  @ReactMethod
-  public void printQRCode(String data, int modulesize, int errorlevel) throws RemoteException {
-    printerService.printQRCode(data, modulesize, errorlevel, innerResultCallback);
+  @Override
+  public void printQRCode(String data, double modulesize, double errorlevel) throws RemoteException {
+    printerService.printQRCode(data, (int)modulesize, (int)errorlevel, innerResultCallback);
   }
 
   /**
@@ -427,9 +424,9 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    * @param modulesize
    * @param errorlevel
    */
-  @ReactMethod
-  public void print2DCode(String data, int symbology, int modulesize, int errorlevel) throws RemoteException {
-    printerService.print2DCode(data, symbology, modulesize, errorlevel, innerResultCallback);
+  @Override
+  public void print2DCode(String data, double symbology, double modulesize, double errorlevel) throws RemoteException {
+    printerService.print2DCode(data, (int)symbology, (int)modulesize, (int)errorlevel, innerResultCallback);
   }
 
   /**
@@ -437,8 +434,8 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    *
    * @param clear
    */
-  @ReactMethod
-  public void enterPrinterBuffer(Boolean clear) throws RemoteException {
+  @Override
+  public void enterPrinterBuffer(boolean clear) throws RemoteException {
     printerService.enterPrinterBuffer(clear);
   }
 
@@ -447,8 +444,8 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    *
    * @param commit
    */
-  @ReactMethod
-  public void exitPrinterBuffer(Boolean commit) throws RemoteException {
+  @Override
+  public void exitPrinterBuffer(boolean commit) throws RemoteException {
     printerService.exitPrinterBuffer(commit);
   }
 
@@ -456,7 +453,7 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    * 提交事务打印
    * 将事务队列中的所有内容提交并打印，之后仍然处于事务打印模式
    */
-  @ReactMethod
+  @Override
   public void commitPrinterBuffer() throws RemoteException {
     printerService.commitPrinterBuffer();
   }
@@ -464,7 +461,7 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
   /**
    * 提交事务打印并回调结果
    */
-  @ReactMethod
+  @Override
   public void commitPrinterBufferWithCallbacka() throws RemoteException {
     printerService.commitPrinterBufferWithCallback(innerResultCallback);
   }
@@ -474,9 +471,9 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    *
    * @param n
    */
-  @ReactMethod
-  public void lineWrap(int n) throws RemoteException {
-    printerService.lineWrap(n, innerResultCallback);
+  @Override
+  public void lineWrap(double n) throws RemoteException {
+    printerService.lineWrap((int)n, innerResultCallback);
   }
 
   /**
@@ -484,7 +481,7 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    *
    * @throws RemoteException
    */
-  @ReactMethod
+  @Override
   public void cutPaper() throws RemoteException {
     printerService.cutPaper(innerResultCallback);
   }
@@ -492,7 +489,7 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
   /**
    * 打开钱箱
    */
-  @ReactMethod
+  @Override
   public void openDrawer() throws RemoteException {
     printerService.openDrawer(innerResultCallback);
   }
@@ -502,7 +499,7 @@ public class SunmiPrinterModule extends ReactContextBaseJavaModule {
    *
    * @param promise
    */
-  @ReactMethod
+  @Override
   public void getDrawerStatus(Promise promise) {
     try {
       promise.resolve(printerService.getDrawerStatus());

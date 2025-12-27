@@ -4,10 +4,21 @@ Caution: this is not the official project. I share it because I am working on th
 
 Offical Demos plz refer: https://github.com/shangmisunmi/SunmiPrinterDemo
 
+## Requirements
+
+- **React Native**: >= 0.74.0
+- **Android**: API Level 23+ (Android 6.0+)
+- **Java**: JDK 17
+- **New Architecture**: Required (TurboModules)
+
+This library has been migrated to React Native's new architecture (TurboModules). It requires React Native 0.74 or higher and the new architecture must be enabled.
+
 ## TOC
 
+- [Requirements](#Requirements)
 - [Installation](#Installation)
 - [Linking](#Linking)
+- [Migration from v1.x](#Migration-from-v1x)
 - [Usage](#Usage)
 - [API](#API)
 - [Broadcast Events Listener](#Broadcast-Event-Listener)
@@ -28,9 +39,36 @@ yarn add @heasy/react-native-sunmi-printer
 
 ## Linking
 
-Automatic linking is supported for all platforms (even windows on React native >= 0.63!)
+Automatic linking is supported for React Native >= 0.74 with the new architecture enabled.
 
-Previous versions need to do manual linking.
+To enable the new architecture in your app, add this to your `android/gradle.properties`:
+
+```properties
+newArchEnabled=true
+```
+
+## Migration from v1.x
+
+If you're upgrading from v1.x (old architecture) to v2.x (new architecture):
+
+1. **Update React Native** to 0.74 or higher
+2. **Enable new architecture** in `android/gradle.properties`:
+   ```properties
+   newArchEnabled=true
+   ```
+3. **Update the package**:
+   ```bash
+   yarn add @heasy/react-native-sunmi-printer@^2.0.0
+   # or
+   npm install @heasy/react-native-sunmi-printer@^2.0.0
+   ```
+4. **Rebuild your app**:
+   ```bash
+   cd android && ./gradlew clean
+   cd .. && npx react-native run-android
+   ```
+
+**No code changes required!** The JavaScript API remains 100% compatible.
 
 ## Usage
 

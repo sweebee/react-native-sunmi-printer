@@ -13,16 +13,15 @@ import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.BaseActivityEventListener;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
-import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.reactnativesunmiprinter.NativeSunmiScanSpec;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import android.os.Build;
 
-public class SunmiScanModule extends ReactContextBaseJavaModule {
+public class SunmiScanModule extends NativeSunmiScanSpec {
   private static ReactApplicationContext reactContext;
 
   // ĐỪNG dùng 0x0000 – rất dễ va chạm. Dùng một mã riêng ổn định.
@@ -148,7 +147,7 @@ public class SunmiScanModule extends ReactContextBaseJavaModule {
     return "SunmiScanModule";
   }
 
-  @ReactMethod
+  @Override
   public void scan(final Promise promise) {
     Activity currentActivity = getCurrentActivity();
     if (currentActivity == null) {
