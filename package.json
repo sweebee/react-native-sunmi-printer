@@ -11,7 +11,7 @@
     "src",
     "lib",
     "android",
-    "cpp",
+    "react-native.config.js",
     "!lib/typescript/example",
     "!android/build",
     "!**/__tests__",

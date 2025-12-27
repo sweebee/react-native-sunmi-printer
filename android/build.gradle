@@ -19,7 +19,6 @@ def safeExtGet(prop, fallback) {
 
 android {
   compileSdkVersion safeExtGet('compileSdkVersion', 34)
-  buildToolsVersion safeExtGet('buildToolsVersion', '34.0.0')
 
   namespace "com.reactnativesunmiprinter"
 
@@ -63,19 +62,8 @@ repositories {
 
 dependencies {
   implementation "com.facebook.react:react-android"
-  implementation "com.facebook.react:react-native"
 
   // Sunmi printer SDK
   implementation "com.sunmi:printerlibrary:1.0.13"
   implementation "com.sunmi:printerlibrary:1.0.24"
-}
-
-// React Native Codegen task
-afterEvaluate {
-  def generateCodegenArtifactsFromSchema = tasks.findByName("generateCodegenArtifactsFromSchema")
-  if (generateCodegenArtifactsFromSchema) {
-    generateCodegenArtifactsFromSchema.configure {
-      mustRunAfter(":ReactAndroid:buildReactNdkLib")
-    }
-  }
 }
