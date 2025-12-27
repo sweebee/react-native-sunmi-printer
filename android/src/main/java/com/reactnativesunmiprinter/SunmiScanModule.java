@@ -179,12 +179,12 @@ public class SunmiScanModule extends NativeSunmiScanSpec {
   }
 
   @Override
-  public void onCatalystInstanceDestroy() {
+  public void invalidate() {
     // tránh memory leak
     try {
       reactContext.unregisterReceiver(receiver);
     } catch (Exception ignore) {}
-    super.onCatalystInstanceDestroy();
+    super.invalidate();
   }
 
   private static void sendEvent(String msg) {

@@ -67,14 +67,6 @@
     "react": "*",
     "react-native": ">=0.74.0"
   },
-  "codegenConfig": {
-    "name": "RNSunmiPrinterSpec",
-    "type": "modules",
-    "jsSrcsDir": "src/specs",
-    "android": {
-      "javaPackageName": "com.reactnativesunmiprinter"
-    }
-  },
   "jest": {
     "preset": "react-native",
     "modulePathIgnorePatterns": [
